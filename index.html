@@ -1,29 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Full-Screen Iframe Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AhmadHendash.org — Game Hub</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    /* Remove default margins and padding */
-    html, body {
+    body, html {
+      height: 100%;
       margin: 0;
       padding: 0;
-      height: 100%;
-      width: 100%;
       overflow: hidden;
     }
-    /* Make the iframe fill the screen */
     iframe {
-      border: none;
-      height: 100%;
       width: 100%;
-      display: block;
+      height: 100vh;
+      border: none;
     }
   </style>
 </head>
-<body>
-  <iframe src="https://gn-math-main-15888545.codehs.me/" allowfullscreen>
-    Your browser does not support iframes.
-  </iframe>
+
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+  <div id="menu" class="text-center space-y-6">
+    <h1 class="text-4xl font-bold">AhmadHendash.org</h1>
+    <p class="text-lg opacity-80">Play cool games right in your browser.</p>
+
+    <div class="space-y-3">
+
+      <button onclick="openGame('EaglercraftX_1.8_u53_Offline_Signed.html')"
+         class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-xl font-bold block mx-auto">
+        🟩 Play Minecraft (EaglercraftX)
+      </button>
+
+      <button onclick="openGame('CrazyCars.html')"
+         class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg text-xl font-bold block mx-auto">
+        🏎️ Play Crazy Cars
+      </button>
+
+      <button onclick="openGame('1v1LoL.html')"
+         class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg text-xl font-bold block mx-auto">
+        🧨 Play 1v1.LoL
+      </button>
+
+    </div>
+
+    <footer class="pt-8 opacity-75 text-sm">
+      © 2025 Ahmad Hendash —
+      <a href="https://opensource.org/license/mit/" target="_blank" class="underline text-blue-400 hover:text-blue-300">
+        MIT License
+      </a>
+    </footer>
+  </div>
+
+  <div id="gameView" class="hidden w-full h-full flex flex-col">
+    <button onclick="goBack()" class="bg-blue-600 hover:bg-blue-700 p-3 text-xl font-bold">
+      🔙 Back
+    </button>
+    <iframe id="gameFrame" src=""></iframe>
+  </div>
+
+<script>
+  function openGame(file) {
+    window.location.search = "?game=" + encodeURIComponent(file);
+  }
+
+  function goBack() {
+    window.location.search = "";
+  }
+
+  function loadFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const game = params.get("game");
+
+    if (game) {
+      document.getElementById("menu").classList.add("hidden");
+      document.getElementById("gameView").classList.remove("hidden");
+      document.getElementById("gameFrame").src = decodeURIComponent(game);
+    }
+  }
+
+  loadFromURL();
+</script>
+
 </body>
 </html>
