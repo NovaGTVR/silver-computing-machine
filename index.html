@@ -57,7 +57,8 @@
   </div>
 
   <div id="gameView" class="hidden w-full h-full flex flex-col">
-    <button onclick="goBack()" class="bg-blue-600 hover:bg-blue-700 p-3 text-xl font-bold">
+    <button id="backBtn"
+            class="bg-blue-600 hover:bg-blue-700 p-3 text-xl font-bold">
       🔙 Back
     </button>
     <iframe id="gameFrame" src=""></iframe>
@@ -65,13 +66,26 @@
 
 <script>
   function openGame(file) {
-    window.location.search = "?game=" + encodeURIComponent(file);
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("gameView").classList.remove("hidden");
+    document.getElementById("gameFrame").src = file;
+
+    // update URL without refresh
+    history.pushState({page: "game"}, "", "?game=" + encodeURIComponent(file));
   }
 
   function goBack() {
-    window.location.search = "";
+    document.getElementById("menu").classList.remove("hidden");
+    document.getElementById("gameView").classList.add("hidden");
+    document.getElementById("gameFrame").src = ""; // stop game
+
+    // restore original URL without refresh
+    history.pushState({page: "menu"}, "", "/");
   }
 
+  document.getElementById("backBtn").addEventListener("click", goBack);
+
+  // load game if URL already contains it (page refresh/opened via link)
   function loadFromURL() {
     const params = new URLSearchParams(window.location.search);
     const game = params.get("game");
